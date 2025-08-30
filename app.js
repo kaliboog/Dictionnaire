@@ -192,8 +192,7 @@
   const importBtn=document.getElementById('importBtn');
 
   let currentLesson=null,curVariantIndex=0,i=0,teacherMode=false,frenchVoice=null;
-
-  function selectFrenchVoice(){frenchVoice=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('fr'))||null}
+  function selectFrenchVoice(){const voices=speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.startsWith('fr'));frenchVoice=voices.find(v=>/(Siri|Enhanced|Premium)/i.test(v.name||'')||/(Siri|Enhanced|Premium)/i.test(v.voiceURI||''))||voices[0]||null}
   selectFrenchVoice();
   speechSynthesis.addEventListener('voiceschanged',selectFrenchVoice);
 
