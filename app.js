@@ -1,0 +1,213 @@
+(function(){
+  function shortLabel(l){ if(l.labelShort) return l.labelShort; if(l.title.length>8) return l.title.split('/')[0]+'…'; return l.title; }
+  const EMOJI={
+  // Alphabet — A
+  'ami':'🧑‍🤝‍🧑','âne':'🐴','arbre':'🌳','avion':'✈️','arc':'🏹',
+  // B
+  'bateau':'⛵','bébé':'👶','biscuit':'🍪','bonbon':'🍬','bureau':'💼',
+  // C
+  'cadeau':'🎁','carotte':'🥕','cerise':'🍒','citron':'🍋','cube':'🧊',
+  // D
+  'dodo':'😴','dame':'👩','dinosaure':'🦖','domino':'🁣','dinde':'🦃',
+  // E
+  'école':'🏫','été':'☀️','éléphant':'🐘','étoile':'⭐','enfant':'🧒',
+  // F
+  'farine':'🌾','fleur':'🌸','fusée':'🚀','forêt':'🌲','famille':'👨‍👩‍👧',
+  // G
+  'gâteau':'🎂','girafe':'🦒','guitare':'🎸','gomme':'🧽','glace':'🍨',
+  // H
+  'haricot':'🫘','hibou':'🦉','histoire':'📖','hiver':'❄️','hélicoptère':'🚁',
+  // I
+  'igloo':'🏠','image':'🖼️','idée':'💡','insecte':'🐞','île':'🏝️',
+  // J
+  'jupe':'👗','jardin':'🌼','jambe':'🦵','jaune':'🟨','jouet':'🧸',
+  // K
+  'kiwi':'🥝','kangourou':'🦘','koala':'🐨','ketchup':'🍅','kimono':'👘',
+  // L
+  'lapin':'🐰','livre':'📖','lune':'🌙','lait':'🥛','lit':'🛏️',
+  // M
+  'maman':'👩','maison':'🏠','moto':'🏍️','musée':'🏛️','miel':'🍯',
+  // N
+  'neige':'❄️','navire':'🚢','nuit':'🌙','nuage':'☁️','nid':'🪺',
+  // O
+  'orange':'🍊','ours':'🐻','os':'🦴','oiseau':'🐦','outil':'🛠️',
+  // P
+  'papa':'👨','poisson':'🐟','pomme':'🍎','poule':'🐔','puzzle':'🧩',
+  // Q
+  'quatre':'4️⃣','question':'❓','quoi':'❓','quinze':'1️⃣5️⃣','aquarium':'🐠',
+  // R
+  'roue':'🛞','robot':'🤖','rire':'😂','rat':'🐭','rivière':'🏞️',
+  // S
+  'soleil':'☀️','salade':'🥗','sac':'👜','sable':'🏖️','souris':'🐭',
+  // T
+  'table':'🪑','tomate':'🍅','tapis':'🧶','tortue':'🐢','train':'🚆',
+  // U
+  'uniforme':'🎖️','usine':'🏭','unique':'✨','ukulele':'🎸','urgence':'🚑',
+  // V
+  'vache':'🐄','vélo':'🚲','voiture':'🚗','verre':'🥛','violet':'🟣',
+  // W
+  'wagon':'🚃','wifi':'📶','whisky':'🥃','walkman':'🎧','wow':'🤩',
+  // X
+  'xylophone':'🎼','taxi':'🚕','saxophone':'🎷','boxe':'🥊','mix':'🔀',
+  // Y
+  'yaourt':'🥛','yoyo':'🪀','yoga':'🧘','yack':'🐃','yéti':'🧌',
+  // Z
+  'zèbre':'🦓','zéro':'0️⃣','zoo':'🦒','pizza':'🍕','gaz':'🧪',
+
+  // Digrammes — CH
+  'chat':'🐱','chaise':'🪑','chocolat':'🍫','château':'🏰','chemise':'👔',
+  // GN
+  'agneau':'🐑','montagne':'⛰️','ligne':'📏','campagne':'🏞️','champignon':'🍄',
+  // OU
+  'mouton':'🐑','bouche':'👄',
+  // OI
+  'trois':'3️⃣','roi':'👑',
+  // AN/AM
+  'manteau':'🧥','panda':'🐼','banane':'🍌','tambour':'🥁','camping':'🏕️',
+  // EN/EM
+  'dent':'🦷','argent':'💶','tente':'⛺','temps':'⏳',
+  // IN/IM
+  'matin':'🌅','chemin':'🛣️','linge':'🧺','important':'❗',
+  // AIN/EIN
+  'pain':'🥖','main':'🤚','bain':'🛁','sein':'❤️','plein':'🈵',
+  // ON/OM
+  'bonbon':'🍬','ballon':'🎈','dragon':'🐉','pantalon':'👖','prénom':'🪪',
+  // EU/ŒU
+  'feu':'🔥','bleu':'🔵','jeu':'🎮','peu':'➖','cheveux':'💇',
+  // AU/EAU
+  'eau':'💧','cadeau':'🎁','chapeau':'🎩',
+  // ILL
+  'fille':'👧','bille':'🔵','gorille':'🦍','papillon':'🦋','vanille':'🍦',
+  // CE/CI/Ç
+  'garçon':'👦','leçon':'📝','merci':'🙏',
+  // GE/GI
+  'géant':'🗼','magie':'✨','page':'📄','rouge':'🟥',
+  // GU
+  'langue':'👅','aiguille':'🪡','guêpe':'🐝','pingouin':'🐧',
+  // QU — (quatre, question, quinze, aquarium, quoi) already mapped above
+  // PH
+  'photo':'📸','phoque':'🦭','téléphone':'📞','pharmacie':'💊',
+  // OIN/ION
+  'coin':'🪙','loin':'📏','avion':'✈️','camion':'🚚','champion':'🏆',
+
+  // Groupes — BL
+  'blanc':'⚪','blague':'😄','blé':'🌾','blouson':'🧥','bleu':'🔵',
+  // BR
+  'bras':'💪','brioche':'🥐','brique':'🧱','brocoli':'🥦','brouillard':'🌫️',
+  // CL
+  'classe':'🏫','cloche':'🔔','clé':'🗝️','clown':'🤡','club':'🏟️',
+  // CR
+  'crabe':'🦀','crème':'🍨','crayon':'✏️','croissant':'🥐','cruche':'🫙',
+  // DR
+  'drapeau':'🏳️','dromadaire':'🐪','drôle':'😄','drap':'🛏️',
+  // FL
+  'flamme':'🔥','flûte':'🪈','flocon':'❄️','flèche':'🏹',
+  // FR
+  'fraise':'🍓','frère':'👦','frigo':'🧊','fromage':'🧀','froid':'🥶',
+  // GL
+  'globe':'🌐','glisser':'🛼','gluant':'🟢','glaçon':'🧊',
+  // GR
+  'grenade':'🍈','gris':'⚪','grotte':'🕳️','grue':'🏗️','griffe':'🐾',
+  // PL
+  'plateau':'🍽️','plage':'🏖️','plume':'🪶','plan':'🗺️','plat':'🍽️',
+  // PR
+  'prince':'🤴','princesse':'👸','prune':'🍑','proie':'🦴',
+  // TR
+  'trésor':'🪙','triangle':'🔺','trompette':'🎺','truc':'🧩'
+};
+  const LESSONS=[
+  // ===== Alphabet (all letters) =====
+  {id:'A',title:'A',week:'Alphabet',variants:[{label:'Mots',items:['ami','âne','arbre','avion','arc']}]},
+  {id:'B',title:'B',week:'Alphabet',variants:[{label:'Mots',items:['bateau','bébé','biscuit','bonbon','bureau']}]},
+  {id:'C',title:'C',week:'Alphabet',variants:[{label:'Mots',items:['cadeau','carotte','cerise','citron','cube']}]},
+  {id:'D',title:'D',week:'Alphabet',variants:[{label:'Mots',items:['dodo','dame','dinosaure','domino','dinde']}]},
+  {id:'E',title:'E',week:'Alphabet',variants:[{label:'Mots',items:['école','été','éléphant','étoile','enfant']}]},
+  {id:'F',title:'F',week:'Alphabet',variants:[{label:'Mots',items:['farine','fleur','fusée','forêt','famille']}]},
+  {id:'G',title:'G',week:'Alphabet',variants:[{label:'Mots',items:['gâteau','girafe','guitare','gomme','glace']}]},
+  {id:'H',title:'H',week:'Alphabet',variants:[{label:'Mots',items:['haricot','hibou','histoire','hiver','hélicoptère']}]},
+  {id:'I',title:'I',week:'Alphabet',variants:[{label:'Mots',items:['igloo','image','idée','insecte','île']}]},
+  {id:'J',title:'J',week:'Alphabet',variants:[{label:'Mots',items:['jupe','jardin','jambe','jaune','jouet']}]},
+  {id:'K',title:'K',week:'Alphabet',variants:[{label:'Mots',items:['kiwi','kangourou','koala','ketchup','kimono']}]},
+  {id:'L',title:'L',week:'Alphabet',variants:[{label:'Mots',items:['lapin','livre','lune','lait','lit']}]},
+  {id:'M',title:'M',week:'Alphabet',variants:[{label:'Mots',items:['maman','maison','moto','musée','miel']}]},
+  {id:'N',title:'N',week:'Alphabet',variants:[{label:'Mots',items:['neige','navire','nuit','nuage','nid']}]},
+  {id:'O',title:'O',week:'Alphabet',variants:[{label:'Mots',items:['orange','ours','os','oiseau','outil']}]},
+  {id:'P',title:'P',week:'Alphabet',variants:[{label:'Mots',items:['papa','poisson','pomme','poule','puzzle']}]},
+  {id:'Q',title:'Q',week:'Alphabet',variants:[{label:'Mots',items:['quatre','question','quoi','quinze','aquarium']}]},
+  {id:'R',title:'R',week:'Alphabet',variants:[{label:'Mots',items:['roue','robot','rire','rat','rivière']}]},
+  {id:'S',title:'S',week:'Alphabet',variants:[{label:'Mots',items:['soleil','salade','sac','sable','souris']}]},
+  {id:'T',title:'T',week:'Alphabet',variants:[{label:'Mots',items:['table','tomate','tapis','tortue','train']}]},
+  {id:'U',title:'U',week:'Alphabet',variants:[{label:'Mots',items:['uniforme','usine','unique','ukulele','urgence']}]},
+  {id:'V',title:'V',week:'Alphabet',variants:[{label:'Mots',items:['vache','vélo','voiture','verre','violet']}]},
+  {id:'W',title:'W',week:'Alphabet',variants:[{label:'Mots',items:['wagon','wifi','whisky','walkman','wow']}]},
+  {id:'X',title:'X',week:'Alphabet',variants:[{label:'Mots',items:['xylophone','taxi','saxophone','boxe','mix']}]},
+  {id:'Y',title:'Y',week:'Alphabet',variants:[{label:'Mots',items:['yaourt','yoyo','yoga','yack','yéti']}]},
+  {id:'Z',title:'Z',week:'Alphabet',variants:[{label:'Mots',items:['zèbre','zéro','zoo','pizza','gaz']}]},
+
+  // ===== Digraphes & voyelles complexes =====
+  {id:'CH',title:'CH',week:'Digrammes',variants:[{label:'Mots',items:['chat','chaise','chocolat','château','chemise']}]},
+  {id:'GN',title:'GN',week:'Digrammes',variants:[{label:'Mots',items:['agneau','montagne','ligne','campagne','champignon']}]},
+  {id:'OU',title:'OU',week:'Digrammes',variants:[{label:'Mots',items:['souris','poule','roue','mouton','bouche']}]},
+  {id:'OI',title:'OI',week:'Digrammes',variants:[{label:'Mots',items:['oiseau','poisson','trois','roi','voiture']}]},
+  {id:'AN',title:'AN/AM',week:'Digrammes',variants:[{label:'Mots',items:['manteau','panda','banane','tambour','camping']}]},
+  {id:'EN',title:'EN/EM',week:'Digrammes',variants:[{label:'Mots',items:['enfant','dent','argent','tente','temps']}]},
+  {id:'IN',title:'IN/IM',week:'Digrammes',variants:[{label:'Mots',items:['lapin','matin','chemin','linge','important']}]},
+  {id:'AINEIN',title:'AIN/EIN',labelShort:'AIN/EIN',week:'Digrammes',variants:[{label:'Mots',items:['pain','main','bain','sein','plein']}]},
+  {id:'ON',title:'ON/OM',week:'Digrammes',variants:[{label:'Mots',items:['bonbon','ballon','dragon','pantalon','prénom']}]},
+  {id:'EU',title:'EU/ŒU',week:'Digrammes',variants:[{label:'Mots',items:['feu','bleu','jeu','peu','cheveux']}]},
+  {id:'AU',title:'AU/EAU',week:'Digrammes',variants:[{label:'Mots',items:['eau','bateau','cadeau','chapeau','oiseau']}]},
+  {id:'ILL',title:'ILL',week:'Digrammes',variants:[{label:'Mots',items:['fille','bille','gorille','papillon','vanille']}]},
+  {id:'CECI',title:'CE/CI/Ç',labelShort:'CE/CI/Ç',week:'Digrammes',variants:[{label:'Mots',items:['cerise','citron','garçon','leçon','merci']}]},
+  {id:'GEGI',title:'GE/GI',labelShort:'GE/GI',week:'Digrammes',variants:[{label:'Mots',items:['girafe','géant','magie','page','rouge']}]},
+  {id:'GU',title:'GU',week:'Digrammes',variants:[{label:'Mots',items:['guitare','langue','aiguille','guêpe','pingouin']}]},
+  {id:'QU',title:'QU',week:'Digrammes',variants:[{label:'Mots',items:['quatre','question','quinze','aquarium','quoi']}]},
+  {id:'PH',title:'PH',week:'Digrammes',variants:[{label:'Mots',items:['photo','phoque','téléphone','pharmacie','éléphant']}]},
+  {id:'OI N',title:'OIN/ION',labelShort:'OIN/ION',week:'Digrammes',variants:[{label:'Mots',items:['coin','loin','avion','camion','champion']}]},
+
+  // ===== Groupes consonantiques =====
+  {id:'BL',title:'BL',week:'Groupes',variants:[{label:'Mots',items:['blanc','blague','blé','blouson','bleu']}]},
+  {id:'BR',title:'BR',week:'Groupes',variants:[{label:'Mots',items:['bras','brioche','brique','brocoli','brouillard']}]},
+  {id:'CL',title:'CL',week:'Groupes',variants:[{label:'Mots',items:['classe','cloche','clé','clown','club']}]},
+  {id:'CR',title:'CR',week:'Groupes',variants:[{label:'Mots',items:['crabe','crème','crayon','croissant','cruche']}]},
+  {id:'DR',title:'DR',week:'Groupes',variants:[{label:'Mots',items:['dragon','drapeau','dromadaire','drôle','drap']}]},
+  {id:'FL',title:'FL',week:'Groupes',variants:[{label:'Mots',items:['fleur','flamme','flûte','flocon','flèche']}]},
+  {id:'FR',title:'FR',week:'Groupes',variants:[{label:'Mots',items:['fraise','frère','frigo','fromage','froid']}]},
+  {id:'GL',title:'GL',week:'Groupes',variants:[{label:'Mots',items:['glace','globe','glisser','gluant','glaçon']}]},
+  {id:'GR',title:'GR',week:'Groupes',variants:[{label:'Mots',items:['grenade','gris','grotte','grue','griffe']}]},
+  {id:'PL',title:'PL',week:'Groupes',variants:[{label:'Mots',items:['plateau','plage','plume','plan','plat']}]},
+  {id:'PR',title:'PR',week:'Groupes',variants:[{label:'Mots',items:['prince','princesse','prune','prénom','proie']}]},
+  {id:'TR',title:'TR',week:'Groupes',variants:[{label:'Mots',items:['train','trésor','triangle','trompette','truc']}]}
+];
+
+  const homeGrid=document.getElementById('homeGrid');
+  const screenHome=document.getElementById('screenHome');
+  const screenLesson=document.getElementById('screenLesson');
+  const wordEl=document.getElementById('word');
+  const emojiEl=document.getElementById('emoji');
+  const progressEl=document.getElementById('progress');
+  const lessonMeta=document.getElementById('lessonMeta');
+  const variantSelect=document.getElementById('variantSelect');
+  const hdrRight=document.getElementById('hdrRight');
+  const teacherToggle=document.getElementById('teacherToggle');
+  const importBtn=document.getElementById('importBtn');
+
+  let currentLesson=null,curVariantIndex=0,i=0,teacherMode=false;
+
+  teacherToggle.addEventListener('change',()=>{teacherMode=teacherToggle.checked;variantSelect.classList.toggle('hidden',!teacherMode);importBtn.style.display=teacherMode?'inline-block':'none'});
+
+  function emojiFor(w){return EMOJI[w.toLowerCase()]||'🔤'}
+  function updateWord(){const items=currentLesson.variants[curVariantIndex].items;const w=items[i];wordEl.textContent=w.charAt(0).toUpperCase()+w.slice(1);emojiEl.textContent=emojiFor(w);progressEl.textContent=`${i+1}/${items.length}`;hdrRight.textContent=`${currentLesson.title} · ${i+1}/${items.length}`}
+  function hear(){const text=currentLesson.variants[curVariantIndex].items[i];const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';speechSynthesis.cancel();setTimeout(()=>speechSynthesis.speak(u),10)}
+  function renderLesson(){lessonMeta.textContent=`${currentLesson.week} — ${currentLesson.title}`;variantSelect.innerHTML='';currentLesson.variants.forEach((v,idx)=>{const o=document.createElement('option');o.value=idx;o.textContent=v.label;if(idx===curVariantIndex)o.selected=true;variantSelect.appendChild(o)});variantSelect.classList.toggle('hidden',!teacherMode);updateWord();screenHome.style.display='none';screenLesson.style.display='block'}
+  function showLesson(id){const l=LESSONS.find(x=>x.id===id);if(!l)return;currentLesson=l;i=0;curVariantIndex=0;renderLesson()}
+
+  function renderHome(){homeGrid.innerHTML='';const weekNum=w=>{const m=(w||'').match(/(\d+)/);return m?parseInt(m[1],10):999};const groups={};LESSONS.sort((a,b)=>weekNum(a.week)-weekNum(b.week)).forEach(l=>{if(!groups[l.week])groups[l.week]=[];groups[l.week].push(l)});Object.keys(groups).sort((a,b)=>weekNum(a)-weekNum(b)).forEach(week=>{const section=document.createElement('div');const h=document.createElement('h3');h.textContent=week;h.className='week';const grid=document.createElement('div');grid.className='grid letters';groups[week].forEach(l=>{const tile=document.createElement('button');tile.className='tile';tile.innerHTML=`<div class="big">${shortLabel(l)}</div><div class="sub">${l.title}</div>`;tile.addEventListener('click',()=>showLesson(l.id));grid.appendChild(tile)});section.appendChild(h);section.appendChild(grid);homeGrid.appendChild(section)})}
+
+  document.getElementById('prevBtn').addEventListener('click',()=>{const items=currentLesson.variants[curVariantIndex].items;i=(i-1+items.length)%items.length;updateWord()})
+  document.getElementById('nextBtn').addEventListener('click',()=>{const items=currentLesson.variants[curVariantIndex].items;i=(i+1)%items.length;updateWord()})
+  document.getElementById('hearBtn').addEventListener('click',hear)
+  document.getElementById('backBtn').addEventListener('click',()=>{screenLesson.style.display='none';screenHome.style.display='block';hdrRight.textContent=''})
+  variantSelect.addEventListener('change',e=>{curVariantIndex=parseInt(e.target.value)||0;i=0;updateWord()})
+
+  renderHome();
+})();
