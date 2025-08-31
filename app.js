@@ -200,9 +200,18 @@
 
   function emojiFor(w){return EMOJI[w.toLowerCase()]||'🔤'}
   function updateWord(){const items=currentLesson.variants[curVariantIndex].items;const w=items[i];wordEl.textContent=w.charAt(0).toUpperCase()+w.slice(1);emojiEl.textContent=emojiFor(w);progressEl.textContent=`${i+1}/${items.length}`;hdrRight.textContent=`${currentLesson.title} · ${i+1}/${items.length}`}
-  function hear(){const text=currentLesson.variants[curVariantIndex].items[i];
-    if(window.speak){speak(text,{voice:'fr',pitch:50,speed:175,amplitude:100});}
-    else{const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';if(frenchVoice)u.voice=frenchVoice;speechSynthesis.cancel();setTimeout(()=>speechSynthesis.speak(u),10);}}
+  function hear(){
+    const text=currentLesson.variants[curVariantIndex].items[i];
+    if(window.speak){
+      try{
+        speak(text,{voice:'fr',pitch:50,speed:175,amplitude:100});
+        return;
+      }catch(err){
+        console.warn('speak.js failed, falling back to Web Speech API',err);
+      }
+    }
+    const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';if(frenchVoice)u.voice=frenchVoice;speechSynthesis.cancel();setTimeout(()=>speechSynthesis.speak(u),10);
+  }
   function renderLesson(){lessonMeta.textContent=`${currentLesson.week} — ${currentLesson.title}`;variantSelect.innerHTML='';currentLesson.variants.forEach((v,idx)=>{const o=document.createElement('option');o.value=idx;o.textContent=v.label;if(idx===curVariantIndex)o.selected=true;variantSelect.appendChild(o)});variantSelect.classList.toggle('hidden',!teacherMode);updateWord();screenHome.style.display='none';screenLesson.style.display='block'}
   function showLesson(id){const l=LESSONS.find(x=>x.id===id);if(!l)return;currentLesson=l;i=0;curVariantIndex=0;renderLesson()}
 
