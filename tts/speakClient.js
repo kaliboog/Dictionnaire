@@ -86,7 +86,8 @@ function speak(text, args) {
     if (PROFILE) console.log('speak.js: wav processing took ' + (Date.now()-startTime).toFixed(2) + ' ms');
   }
 
-  if (args && args.noWorker) {
+  args = args || {};
+  if (!speakWorker || args.noWorker) {
     // Do everything right now. speakGenerator.js must have been loaded.
     var startTime = Date.now();
     var wav = generateSpeech(text, args);
