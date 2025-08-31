@@ -1,6 +1,8 @@
 # Dictionnaire
 
 This repository contains an offline vocabulary explorer for French sounds.
+It now bundles an [eSpeak](https://github.com/espeak-ng/espeak-ng) WebAssembly build to
+provide offline French text‑to‑speech for each word.
 
 ## Deploying on Netlify
 
